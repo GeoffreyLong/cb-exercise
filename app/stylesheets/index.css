@@ -1,5 +1,12 @@
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
   overflow: hidden;
+}
+#bookInputContainer {
+  padding-top: 30px;
+}
+#bookInputContainer #bookInput {
+  margin-bottom: 0;
 }
