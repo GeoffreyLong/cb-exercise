@@ -8,3 +8,4 @@ Rerouting to main url
 
 TODO 
 - Find implementation
+- Improve error handling
