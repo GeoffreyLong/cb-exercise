@@ -17,6 +17,9 @@ app.get('/favicon.ico', function(req, res) {
 
 app.use('/', routes);
 
+app.all('*', function(req, res) {
+    res.redirect("/");
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
