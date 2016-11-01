@@ -1,0 +1,19 @@
+{
+  "name": "cb-exercise",
+  "authors": [
+    "Geoffrey Long <Geoffrey.Long@mail.mcgill.ca>"
+  ],
+  "description": "CB Exercise",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.8"
+  }
+}
