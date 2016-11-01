@@ -14,6 +14,7 @@ router.get('/find', function(req, res) {
       var bookDataJson = JSON.parse(body);
       var bookData = bookDataJson[queryBook];
       res.status(200);
+
       if (bookData) {
         var returnBook = {};
         returnBook.title = bookData['title'];

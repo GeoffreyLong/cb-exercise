@@ -2,12 +2,26 @@
   <div>
     <md-input-container flex class="md-block" id="bookInput">
       <label>ISBN or LCCN</label>
-      <input type="text" ng-model="book.name">
+      <input type="text" ng-model="bookQuery.name">
     </md-input-container>
   </div>
   <div>
-    <md-button>
-      <md-icon class="material-icons" ng-click="findBooks()"> search </md-icon>
+    <md-button ng-click="findBooks()">
+      <md-icon class="material-icons"> search </md-icon>
     </md-button>
   </div>
 </div>
+
+<!-- Iterate over the fields of the book -->
+<table ng-if="books">
+  <tr>
+    <th> Title </th>
+    <th> Subtitle </th>
+    <th> # of Pages </th>
+    <th> URL </th>
+  <tr>
+    <td ng-repeat="field in books">
+      {{ field }}
+    </td>
+  </tr>
+</table>
