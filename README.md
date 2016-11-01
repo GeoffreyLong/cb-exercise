@@ -9,3 +9,4 @@ Rerouting to main url
 TODO 
 - Find implementation
 - Improve error handling
+- Add validation to the input form (angular style validation)

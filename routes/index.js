@@ -8,9 +8,29 @@ router.get('/', function(req, res) {
 });
 
 router.get('/find', function(req, res) {
-  request('https://openlibrary.org/api/books?bibkeys=ISBN:0385472579&format=json&jscmd=data', function (error, response, body) {
+  var queryBook = req.query.book;
+  request('https://openlibrary.org/api/books?bibkeys=' + queryBook + '&format=json&jscmd=data', function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      console.log(body) // Show the HTML for the Google homepage.
+      var bookDataJson = JSON.parse(body);
+      var bookData = bookDataJson[queryBook];
+      res.status(200);
+      if (bookData) {
+        var returnBook = {};
+        returnBook.title = bookData['title'];
+        returnBook.subtitle = bookData['subtitle'];
+        returnBook.pages = bookData['number_of_pages'];
+        returnBook.url = bookData['url'];
+        console.log(returnBook);
+        res.send(returnBook);
+      }
+      else {
+        console.log("No Data");
+        res.send({});
+      }
+    }
+    else {
+      console.log("Error:" + err);
+      res.status(400).send(err);
     }
   })
 });
