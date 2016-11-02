@@ -20,7 +20,6 @@ angular.module('find').component('find', {
       // Only run the API query with a valid string
       var processedQueryString = processBookNames($scope.bookQuery.string);
       if (processedQueryString) {
-        console.log(processedQueryString);
         queryAPI(processedQueryString);
       }
     }
@@ -66,7 +65,7 @@ angular.module('find').component('find', {
     // Include the formatted query string as a parameter to the request
     var queryAPI = function(formattedQueryString) {
       $http({
-        url: '/find',
+        url: 'find/',
         method: 'GET',
         params: {books: formattedQueryString}
       }).then(function(data) {
