@@ -2,7 +2,7 @@
   <div>
     <md-input-container flex class="md-block" id="bookInput">
       <label>ISBN or LCCN</label>
-      <input type="text" ng-model="bookQuery.name">
+      <input type="text" ng-model="bookQuery.string">
     </md-input-container>
   </div>
   <div>
@@ -19,9 +19,11 @@
     <th> Subtitle </th>
     <th> # of Pages </th>
     <th> URL </th>
-  <tr>
-    <td ng-repeat="field in books">
-      {{ field }}
-    </td>
+  </tr>
+  <tr ng-repeat="book in books">
+    <td> {{ book.title }} </td>
+    <td> {{ book.subtitle }} </td>
+    <td> {{ book.pages }} </td>
+    <td> {{ book.url }} </td>
   </tr>
 </table>

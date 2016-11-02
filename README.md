@@ -7,6 +7,7 @@ Rerouting to main url
     - I am concerned that if find is invoked as the initial URL that it won't render the HTML. I will probably have to error check this.
 
 TODO 
-- Find implementation
 - Improve error handling
 - Add validation to the input form (angular style validation)
+- Check for duplicate books
+- Add better frontend error handling for the server return
