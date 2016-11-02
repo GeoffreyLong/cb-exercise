@@ -30,20 +30,9 @@ angular.module('find').component('find', {
     // This is based on the common formats for ISBN and LCCN numbers
     // ISBN is a string of 10 or 13 numbers
     // LCCN is slightly more complicated
-    //    LCCN will include a year followed by a serial number (meaning all digits)
-    //    Two digits for years from 1898 to 2000, four beginning in 2001
-    //      1898 to 1900 are distinguished by the size of the serial number
-    //      1969 and 1972 has some numbers beginning with 7
-    //    The serial number is six digits and includes leading zeros now
-    //      Older years may not be six digits
-    //    Sometimes there is a hyphen between the date and the serial
-    //    According to https://www.loc.gov/marc/lccn_structure.html
-    //      You can also have an alphabetic prefix, supplemental number, a suffix, and a revision date
-    //      The site says 6 for the serial, but I have seen them with 4
-    //      Given the possibility of these variances, I will air on the side of caution
-    //      It is probably better to allow a fake LCCN than not allow a real one
-    //    All that being said, the API shows the format as 9 numbers 
-    //      though their strings are typically 8 or 10, so that might be a typo
+    //    There are a decent number of LCCN variations (some involving symbols or letters)
+    //    However, the API shows the format as only numbers, typically between 8 and 10 digits
+    //    This would require further investigation since the description was vague
     var processBookNames = function(bookNames) {
       // Don't worry about the case the user enters "ISBN" or "LCCN" in 
       // "IsbN" is still acceptable
