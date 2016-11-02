@@ -17,7 +17,7 @@ Would want separate sets of valid, incorrectly formatted, and non-existent ISBNs
   - Duplicates
 - ISBNs or LCCNs with long outputs (to test the table)
 - Large ISBN and LCCN entries (many identifiers passed to server)
-
+- Duplicates where ISBN and LCCN correspond to the same book
 
 ## Possible optimizations
 - As soon as the user enters a comma we can run that specific book identifier. This would speed up the user experience. We could either pipe the data directly to the table when the user enters a value, or we could store the results of previous queries and only display when the user clicks the search button. The tradeoff is that there will be many more (smaller) queries to the server and the API, so it might not save any time at all. 
@@ -25,6 +25,7 @@ Would want separate sets of valid, incorrectly formatted, and non-existent ISBNs
 - Depending on the use cases, we could cache some searches. I could see the same person looking up the same book multiple times within a reasonable number of queries. I could also see people looking up the same books during a given time period, especially when it comes to new releases. We would need a caching function, but least recently used would be a good place to start. The user's previous searches could be stored in localstorage. This will allow for around 5mb of local data. The general searches could be stored in a database. Since the book information we are saving doesn't change often, we could keep the cached items for a while. We would still want some sort of expiry token to be checked when we fetch the data. On expiry, the API would be queried. In both cases we would have to see when the search, storage, and setting up the search structure becomes more expensive than the API queries given our hardware. The API may also have rules about how much of their data you can store.
 - A user interface improvement would be to model the input after mail client recipient fields. For instance, in Outlook, when you press enter or add a comma, the field is encapsulated in a removable or editable element. These elements could be colored red if the format is incorrect. 
 - If either the ISBN or LCCN is indexed has some specific indexing (i.e. increases monotonically from 0), you could probably leverage that to know whether or not the entry is a valid identifier. If you know there are no ISBNs of the form 9XXXXXXXXXX then that would be very useful.
+- Using some server side templating like react to serve up the tables would probably speed up the appication.
 
 ## Ongoing issues
 - Since I only have the formatting of the ISBMs and LCCNs, I may pass some inputs to the backend that are formatically correct, but non-existent. I handled these on the server by creating a field in my return object for codes that did not have a corresponding entry on the API. All I was able to do was inform the user of the error though. I could possibly keep a reference sheet of all the ISBNs and LCCNs to search for a possible match. This would take up space and possibly time though. I would have to compare the querying time vs the matching time. It might be worth it if a lot of erroneous inputs are entered into the system. I could possibly implement the structure as a B+ tree of sorts. 
