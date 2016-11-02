@@ -12,7 +12,11 @@
   </div>
 </div>
 
-<!-- Iterate over the fields of the book -->
+<!--  
+      Iterate over the fields of the book 
+      If the books is null (no data queried or blank result)
+      then the table does not appear as just the headers
+-->
 <table ng-if="books">
   <tr>
     <th> Title </th>

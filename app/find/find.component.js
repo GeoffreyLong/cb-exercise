@@ -3,16 +3,22 @@ angular.module('find').component('find', {
   controller: function FindController($scope, $http) {
 
     // Instantiate the book query object
+    // This is for the 2 way data binding with the input field, 
+    // though I don't really use that functionality
     $scope.bookQuery = {};
 
     // Instantiate the books object
+    // This will hold the books when they are populated
     $scope.books = null;
 
     // Function runs when the input button is clicked
+    // It will ensure the input is valid, then it will call the GET to the server
     $scope.findBooks = function() {
       var bookString = $scope.bookQuery.string;
       var processedQueryString = processBookNames(bookString);
-      console.log(processedQueryString);
+
+      // Reset the table
+      $scope.books = null;
 
       // Only run the API query with a valid string
       if (processedQueryString != null) {
@@ -24,8 +30,10 @@ angular.module('find').component('find', {
     // This is based on the common formats for ISBN and LCCN numbers
     // ISBN is a string of 10 or 13 numbers
     // LCCN is slightly more complicated
+    //    
     var processBookNames = function(bookNames) {
-      // I shouldn't care if ISBN or LCCN are lower case
+      // Don't worry about the case the user enters "ISBN" or "LCCN" in 
+      // "IsbN" is still acceptable
       var lowerBookNames = bookNames.toLowerCase();
       var queryString = "";
 
@@ -45,33 +53,50 @@ angular.module('find').component('find', {
       });
 
       // Slice off the last comma and return
-      return queryString.substring(0, queryString.length - 1);
+      // Check for empty string before slicing
+      if (queryString) {
+        return queryString.substring(0, queryString.length - 1);
+      }
+      else {
+        return null;
+      }
     }
 
 
+    // Make a GET request to the backend
+    // Include the formatted query string as a parameter to the request
     var queryAPI = function(formattedQueryString) {
       $http({
         url: '/find',
         method: 'GET',
-        params: {book: formattedQueryString}
-      }).then(function(bookData) {
-        console.log(bookData.data);
-        if (bookData.data) {
-          if (bookData.data.books) {
-            $scope.books = bookData.data.books;
-          }
-          else {
-            $scope.books = null;
-          }
+        params: {books: formattedQueryString}
+      }).then(function(data) {
+        var returnStructure = data.data;
 
-          if (bookData.data.notFound) {
-            var alertString = bookData.data.notFound;
-            alertString += bookData.data.notFound.length == 1 ? " wasn't found" : " weren't found"; 
-            alert(alertString);
-          }
+        // If there is no data, send an alert
+        // If there is data then process it
+        if (Object.keys(returnStructure).length === 0 && returnStructure.constructor === Object) {
+          alert("No data was returned...");
         }
         else {
-          alert("Please check the format of your query: " + bookName);
+          // Should be null unless there was an error in the call to openlibrary
+          if (returnStructure.err) {
+            alert("There was an error in the API call: " + bookData.err);
+          }
+          else {
+            // See if there are any books
+            // If there are none, set the books to null to get rid of the table
+            if (returnStructure.books.length) {
+              $scope.books = returnStructure.books;
+            }
+
+            // Alert the user of any books that weren't found in the API
+            if (returnStructure.notFound.length) {
+              var alertString = returnStructure.notFound;
+              alertString += returnStructure.notFound.length == 1 ? " wasn't found" : " weren't found"; 
+              alert(alertString);
+            }
+          }
         }
       }, function(err) {
         console.log(err);
