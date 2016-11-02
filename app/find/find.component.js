@@ -14,20 +14,20 @@ angular.module('find').component('find', {
     // Function runs when the input button is clicked
     // It will ensure the input is valid, then it will call the GET to the server
     $scope.findBooks = function() {
-      var bookString = $scope.bookQuery.string;
-      var processedQueryString = processBookNames(bookString);
-
       // Reset the table
       $scope.books = null;
 
       // Only run the API query with a valid string
-      if (processedQueryString != null) {
+      var processedQueryString = processBookNames($scope.bookQuery.string);
+      if (processedQueryString) {
         queryAPI(processedQueryString);
       }
     }
 
     // Function takes the string book name and checks for correctness
-    // This is based on the common formats for ISBN and LCCN numbers
+    //    based on the common formats for ISBN and LCCN numbers
+    //    It will return a comma delimited string of the numbers if all are valid
+    //    and an empty string otherwise
     // ISBN is a string of 10 or 13 numbers
     // LCCN is slightly more complicated
     //    There are a decent number of LCCN variations (some involving symbols or letters)
@@ -37,31 +37,24 @@ angular.module('find').component('find', {
       // Don't worry about the case the user enters "ISBN" or "LCCN" in 
       // "IsbN" is still acceptable
       var lowerBookNames = bookNames.toLowerCase();
-      var queryString = "";
+      var queryArray = [];
 
       lowerBookNames.split(',').forEach(function(token) {
         // Remove the white space
         var processedString = token.trim();
         
-        // If the token is in a valid format then add it to the query string
+        // If the token is in a valid format and is not a duplicate, then add to the string
         // Else alert the user and return null  
         if (processedString.match(/^isbn:[0-9]{10}$|^isbn:[0-9]{13}$|^lccn:[0-9]{2,4}-?[0-9]{4,6}$/)) {
-          queryString += processedString + ',';
+          if (!queryArray.includes(processedString)) queryArray.push(processedString);
         }
         else {
           alert(processedString + ' is not in a valid format');
-          return null;
+          return "";
         }
       });
 
-      // Slice off the last comma and return
-      // Check for empty string before slicing
-      if (queryString) {
-        return queryString.substring(0, queryString.length - 1);
-      }
-      else {
-        return null;
-      }
+      return queryArray.toString();
     }
 
 
