@@ -4,8 +4,20 @@ Initial coding exercise for Carbon Black
 ## TODO 
 - Improve error handling
 - Add validation to the input form (angular style validation)
-- Check for duplicate books
+- Check for duplicate books where both the ISBN and LCCN are inputted?
 - Add better frontend error handling for the server return
+
+## TESTS
+Would want separate sets of valid, incorrectly formatted, and non-existent ISBNs and LCCNs for the following. Tests can be created dynamically by mixing the sets.
+- Valid entries: Single ISBN, multiple ISBN, single LCCN, multiple LCCN, multiple ISBN and LCCN 
+  - All of the above with incorrectly formatted strings
+  - All of the above with a mix of correct and incorrect formatting
+  - All of the above with non-existent ISBNs and LCCNs
+  - All of the above with a mix of correct, incorrect, and non-existent
+  - Duplicates
+- ISBNs or LCCNs with long outputs (to test the table)
+- Large ISBN and LCCN entries (many identifiers passed to server)
+
 
 ## Possible optimizations
 - As soon as the user enters a comma we can run that specific book identifier. This would speed up the user experience. We could either pipe the data directly to the table when the user enters a value, or we could store the results of previous queries and only display when the user clicks the search button. The tradeoff is that there will be many more (smaller) queries to the server and the API, so it might not save any time at all. 
