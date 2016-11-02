@@ -20,6 +20,7 @@ angular.module('find').component('find', {
       // Only run the API query with a valid string
       var processedQueryString = processBookNames($scope.bookQuery.string);
       if (processedQueryString) {
+        console.log(processedQueryString);
         queryAPI(processedQueryString);
       }
     }
@@ -39,7 +40,10 @@ angular.module('find').component('find', {
       var lowerBookNames = bookNames.toLowerCase();
       var queryArray = [];
 
-      lowerBookNames.split(',').forEach(function(token) {
+      var tokens = lowerBookNames.split(','); 
+      for (var i = 0; i < tokens.length; i ++) {
+        var token = tokens[i];
+
         // Remove the white space
         var processedString = token.trim();
         
@@ -52,7 +56,7 @@ angular.module('find').component('find', {
           alert(processedString + ' is not in a valid format');
           return "";
         }
-      });
+      }
 
       return queryArray.toString();
     }
